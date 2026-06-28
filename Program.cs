@@ -19,6 +19,12 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
             context.Response.StatusCode = StatusCodes.Status401Unauthorized;
             return Task.CompletedTask;
         };
+        // Custom handler for when a user IS logged in, but doesn't have the right role
+        options.Events.OnRedirectToAccessDenied = context =>
+        {
+            context.Response.StatusCode = StatusCodes.Status403Forbidden;
+            return Task.CompletedTask;
+        };
     });
 
 builder.Services.AddAuthorization();
@@ -33,16 +39,19 @@ app.UseAuthorization();
 // ENDPOINTS
 // ==========================================
 
-// Endpoint 1: Mock Authentication Gate
+// Modified Login Gate: Allows choosing your role via payload for testing
 app.MapPost("/api/auth/login", async (LoginRequest request, HttpContext httpContext) =>
 {
-    if (request.Email == "crystal@dev.ca" && request.Password == "Password123")
+    // Mock user database logic
+    string assignedRole = request.Email == "admin@dev.ca" ? "Admin" : "Practitioner";
+
+    if (request.Password == "Password123")
     {
         var claims = new List<Claim>
         {
             new Claim(ClaimTypes.NameIdentifier, "USER-773"),
             new Claim(ClaimTypes.Email, request.Email),
-            new Claim(ClaimTypes.Role, "Practitioner") 
+            new Claim(ClaimTypes.Role, assignedRole) // Setting the dynamic role here!
         };
 
         var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -50,27 +59,35 @@ app.MapPost("/api/auth/login", async (LoginRequest request, HttpContext httpCont
 
         await httpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, userPrincipal);
 
-        return Results.Ok(new { message = "Authentication successful. Secure cookie dropped." });
+        return Results.Ok(new { message = $"Logged in successfully as an {assignedRole}." });
     }
 
     return Results.Unauthorized();
 });
-
-// Endpoint 2: A Guarded Route
+// Endpoint 2: Standard Secure Route (Accessible by ANY authenticated user)
 app.MapGet("/api/secure/dashboard", (HttpContext httpContext) =>
 {
     var userEmail = httpContext.User.FindFirst(ClaimTypes.Email)?.Value;
     var userRole = httpContext.User.FindFirst(ClaimTypes.Role)?.Value;
 
     return Results.Ok(new {
-        message = "Welcome to the hidden zone!",
+        message = "Welcome to the base secure dashboard!",
         identity = userEmail,
-        accessLevel = userRole
+        role = userRole
     });
 })
 .RequireAuthorization();
 
-// Endpoint 3: Logout
+// Endpoint 3: Highly Restricted Route (ONLY Admins allowed)
+app.MapDelete("/api/secure/delete-record/{id}", (int id, HttpContext httpContext) =>
+{
+    return Results.Ok(new {
+        message = $"CRITICAL: Record {id} has been permanently purged from the system by an Administrator."
+    });
+})
+.RequireAuthorization(policy => policy.RequireRole("Admin")); // RBAC Guard Clause
+
+// Logout
 app.MapPost("/api/auth/logout", async (HttpContext httpContext) =>
 {
     await httpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
