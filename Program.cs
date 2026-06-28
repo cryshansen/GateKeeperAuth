@@ -4,14 +4,27 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// define a CORS policy to allow requests from the front-end
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("ReactAppPolicy", policy =>
+    {
+        policy.WithOrigins("http://localhost:3000", "https://YOUR-STATIC-APP-NAME.azurestaticapps.net") // Replace with your front-end URL
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials(); // CRITICAL: Allows cookies to pass through CORS
+    });
+});
+
+
 // 1. Configure the ASP.NET Core Secure Cookie Authentication Engine
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
         options.Cookie.Name = "GatekeeperSession";
         options.Cookie.HttpOnly = true; 
-        options.Cookie.SameSite = SameSiteMode.Strict; 
-        options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest; 
+        options.Cookie.SameSite = SameSiteMode.None; 
+        options.Cookie.SecurePolicy = CookieSecurePolicy.Always; 
         options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
         
         options.Events.OnRedirectToLogin = context =>
