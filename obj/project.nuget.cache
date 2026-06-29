@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "l+HobVWweH/76KgBveCuh+Re1rHNNKt5K7oH4XD3afrSAdX3SvRXoJDzbH1cn3VoWpDZK/UUQ3ZDrwKzL6sPGg==",
+  "dgSpecHash": "pBSlTn8ACezcLYROOGGyti2CrDjP3voXlCC5olbRI6nXHsg0S1yJ3YqTrHy8jJ/OkCuOA3Srkqy10JUXaJ1O7A==",
   "success": true,
-  "projectFilePath": "/Users/crystalhansen/code/GateKeeperAuth/GateKeeperAuth.csproj",
+  "projectFilePath": "/Volumes/ImagesSSD/devnet/GateKeeperAuth/GateKeeperAuth.csproj",
   "expectedPackageFiles": [
     "/Users/crystalhansen/.nuget/packages/microsoft.aspnetcore.openapi/8.0.0/microsoft.aspnetcore.openapi.8.0.0.nupkg.sha512",
     "/Users/crystalhansen/.nuget/packages/microsoft.extensions.apidescription.server/6.0.5/microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",

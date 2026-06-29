@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/Users/crystalhansen/code/GateKeeperAuth/GateKeeperAuth.csproj": {}
+    "/Volumes/ImagesSSD/devnet/GateKeeperAuth/GateKeeperAuth.csproj": {}
   },
   "projects": {
-    "/Users/crystalhansen/code/GateKeeperAuth/GateKeeperAuth.csproj": {
+    "/Volumes/ImagesSSD/devnet/GateKeeperAuth/GateKeeperAuth.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/crystalhansen/code/GateKeeperAuth/GateKeeperAuth.csproj",
+        "projectUniqueName": "/Volumes/ImagesSSD/devnet/GateKeeperAuth/GateKeeperAuth.csproj",
         "projectName": "GateKeeperAuth",
-        "projectPath": "/Users/crystalhansen/code/GateKeeperAuth/GateKeeperAuth.csproj",
+        "projectPath": "/Volumes/ImagesSSD/devnet/GateKeeperAuth/GateKeeperAuth.csproj",
         "packagesPath": "/Users/crystalhansen/.nuget/packages/",
-        "outputPath": "/Users/crystalhansen/code/GateKeeperAuth/obj/",
+        "outputPath": "/Volumes/ImagesSSD/devnet/GateKeeperAuth/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/crystalhansen/.nuget/NuGet/NuGet.Config"

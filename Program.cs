@@ -9,7 +9,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("ReactAppPolicy", policy =>
     {
-        policy.WithOrigins("http://localhost:3000", "https://YOUR-STATIC-APP-NAME.azurestaticapps.net") // Replace with your front-end URL
+        policy.WithOrigins("http://localhost:3000", "https://proud-moss-0cfd07110.7.azurestaticapps.net") // Replace with your front-end URL
               .AllowAnyHeader()
               .AllowAnyMethod()
               .AllowCredentials(); // CRITICAL: Allows cookies to pass through CORS
