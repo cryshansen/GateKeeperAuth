@@ -9,7 +9,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("ReactAppPolicy", policy =>
     {
-        policy.WithOrigins("http://localhost:3000", "https://proud-moss-0cfd07110.7.azurestaticapps.net") // Replace with your front-end URL
+        policy.WithOrigins("http://localhost:3000", "https://proud-moss-0cfd07110.azurestaticapps.net") // Replace with your front-end URL
               .AllowAnyHeader()
               .AllowAnyMethod()
               .AllowCredentials(); // CRITICAL: Allows cookies to pass through CORS
@@ -44,9 +44,10 @@ builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
-// 2. Activate the Auth Engine Middlewares
-app.UseAuthentication(); 
-app.UseAuthorization();  
+// 2. Activate the CORS and Auth Engine Middlewares (order matters: CORS before auth)
+app.UseCors("ReactAppPolicy");
+app.UseAuthentication();
+app.UseAuthorization();
 
 // ==========================================
 // ENDPOINTS
